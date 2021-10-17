@@ -22,7 +22,8 @@ For example, a multiplication table (string) for `number == 5` looks like below:
 P. S. You can use `\n` in string to jump to the next line.
 
 ```js
-const multiTable = number =>
-  [...Array(10)].map((_, idx) => `${++idx} * ${number} = ${idx * number}`).join(`\n`);
+const multiTable = (number) =>
+  [...Array(10)]
+    .map((_, idx) => `${++idx} * ${number} = ${idx * number}`)
+    .join(`\n`);
 ```
-

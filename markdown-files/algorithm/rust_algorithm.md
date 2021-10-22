@@ -1313,3 +1313,311 @@ pub fn run() {
 
 ```
 
+## 各位相加到小于9 时输出合
+
+```rust
+/*
+各位相加到小于9 时输出
+imput 15 ->6
+imput 19 ->1
+imput 238 ->4
+*/
+
+pub mod c {
+    pub fn run() {
+        use proconio::{input, marker::*};
+        input! {
+            mut s: Chars,
+        }
+        let s = s
+            .iter_mut()
+            .map(|x| x.to_string().parse::<i32>().unwrap())
+            .collect::<Vec<_>>();
+        // println!("{:?}", s);
+        fn count(arr: Vec<i32>) -> i32 {
+            let mut sum = 0;
+            for i in 0..arr.len() {
+                sum += arr[i];
+            }
+            if sum <= 9 {
+                println!("{:?}", sum);
+            } else {
+                let arr = sum
+                    .to_string()
+                    .chars()
+                    .map(|x| x.to_string().parse::<i32>().unwrap())
+                    .collect::<Vec<_>>();
+                // println!("{:?}", arr);
+                count(arr);
+            }
+            return 0;
+        }
+        count(s);
+    }
+}
+
+
+fn main() {
+    c::run();
+}
+
+```
+
+## enumerate (遍历)
+
+```rust
+pub mod c {
+    pub fn run() {
+        use proconio::{input, marker::*};
+        input! {
+            mut s: Chars,
+        }
+        let s = s
+            .iter_mut()
+            .map(|x| x.to_string().parse::<i32>().unwrap())
+            .collect::<Vec<_>>();
+        // println!("{:?}", s);
+        let mut items = Vec::new();
+        let mut indexs = Vec::new();
+        for (index, item) in s.iter().enumerate() {
+            items.push(item.to_string());
+            indexs.push(index.to_string());
+            // println!(
+            //     "{} {}",
+            //     s.len() as i32 - index.to_owned() as i32,
+            //     item.to_owned()
+            // );
+        }
+        //if s = 145
+        println!("{:?}", indexs); //["0", "1", "2"]
+        println!("{:?}", items); //["1", "4", "5"]
+    }
+}
+
+fn main() {
+    c::run();
+}
+
+```
+
+## 输出String的全排序
+
+```rust
+  // input '123' 输出string的全排序
+  // ["1", "12", "123", "2", "23", "3"]
+pub mod c {
+    pub fn run() {
+        use proconio::{input, marker::*};
+        input! {
+            mut s: Chars,
+        }
+        let s = s.iter_mut().map(|x| x.to_string()).collect::<Vec<_>>();
+        // println!("{:?}", s);
+        #[allow(unused_variables)]
+        fn slice_string(in_string: String, start: i32, end: i32) -> String {
+            let mut s = Vec::new();
+            let in_string_vec = in_string
+                .split("")
+                .filter(|s| !s.is_empty())
+                .collect::<Vec<_>>();
+            if start < 0 && end > in_string_vec.len() as i32 {
+                return "out of range".to_owned();
+            } else {
+                for i in start..end {
+                    s.push(in_string_vec[i as usize]);
+                }
+            }
+            return s.join("").to_string();
+        }
+        // let some_string = slice_string(s_string, 0, 3);
+        // println!("{:?}", some_string);
+        let s_string = s.join("").to_string();
+        let mut out_vec = Vec::new();
+        for i in 0..s.len() + 1 {
+            for j in i + 1..s.len() + 1 {
+                out_vec.push(slice_string(s_string.clone(), i as i32, j as i32));
+            }
+        }
+        println!("{:?}", out_vec);
+        // input '123' 输出string的全排序
+        // ["1", "12", "123", "2", "23", "3"]
+    }
+}
+
+fn main() {
+    c::run();
+}
+```
+
+## slice String
+
+```rust
+#[allow(unused_variables)]
+        fn slice_string(in_string: String, start: i32, end: i32) -> String {
+            let mut s = Vec::new();
+            let in_string_vec = in_string
+                .split("")
+                .filter(|s| !s.is_empty())
+                .collect::<Vec<_>>();
+            if start < 0 && end > in_string_vec.len() as i32 {
+                return "out of range".to_owned();
+            } else {
+                for i in start..end {
+                    s.push(in_string_vec[i as usize]);
+                }
+            }
+            return s.join("").to_string();
+        }
+```
+
+## Sort Vec 从小到大 排序
+
+```rust
+fn main() {
+    //sort 从小到大 排序
+    let mut vec = vec![100.1, 1.15, 5.5, 1.123, 2.0];
+    vec.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    println!("{:?}", vec);
+    assert_eq!(vec, vec![1.123, 1.15, 2.0, 5.5, 100.1]);
+}
+
+```
+
+## **Select Mul **
+
+```
+Sample Input 1 
+123
+Sample Output 1 
+63
+As described in Problem Statement, there are six ways to separate it:
+12 and 3,
+21 and 3,
+13 and 2,
+31 and 2,
+23 and 1,
+32 and 1.
+The products of these pairs, in this order, are 36, 63, 26, 62, 23, 32, with 63 being the maximum.
+```
+
+
+
+```rust
+//solution for problem C
+/*
+input: 123
+out: 63
+{"1": "23", "12": "3", "3": "21", "31": "2", "32": "1"}
+[23, 32, 36, 62, 63] ->out max value
+*/
+
+pub mod c {
+    pub fn run() {
+        use proconio::{input, marker::*};
+        use std::collections::BTreeMap;
+        input! {
+            mut s: Chars,
+        }
+        //reverse
+        fn reverse(phrase: String) -> String {
+            let mut i = phrase.len();
+            let mut reversed = String::new();
+
+            while i > 0 {
+                reversed.push(phrase.chars().nth(i - 1).unwrap());
+                i -= 1;
+            }
+            reversed
+        }
+        let s = s.iter_mut().map(|x| x.to_string()).collect::<Vec<_>>();
+        //generate bmap
+        fn generate_bmap(s: Vec<String>) {
+            let s_string = s.join("").to_string();
+            let mut bmap: BTreeMap<String, String> = BTreeMap::new();
+            for i in 1..s_string.len() {
+                let mut s_string = s.clone().join("").to_string();
+                let s_string_l = s_string.split_off(i);
+                bmap.insert(s_string, s_string_l);
+            }
+            for i in 1..s_string.len() {
+                let mut s_string = reverse(s.clone().join("").to_string());
+                let s_string_l = s_string.split_off(i);
+                bmap.insert(s_string, s_string_l);
+            }
+            let mut first_last_string = s.clone()[s.len() - 1].to_string();
+            first_last_string.push_str(&s.clone()[0].to_owned());
+
+            let mut middle_string = String::new();
+            for i in 1..s.len() - 1 {
+                middle_string.push_str(&s.clone()[i]);
+            }
+            bmap.insert(first_last_string, middle_string);
+
+            let mut vec = vec![];
+            for (v, k) in &bmap {
+                vec.push(
+                    v.to_owned().parse::<i128>().unwrap() * k.to_owned().parse::<i128>().unwrap(),
+                );
+            }
+            vec.sort();
+            println!("{:?}", vec[vec.len() - 1]);
+            // println!("{:?}", bmap);
+            // println!("{:?}", vec);
+        }
+
+        generate_bmap(s.clone());
+    }
+}
+
+fn main() {
+    c::run();
+}
+
+```
+
+## 
+
+```rust
+//solution for problem D
+// 3
+// 1 2
+// 2 3
+// 3 1
+mod d {
+    pub fn run() {
+        proconio::input! {
+            n: usize,
+            ab: [(u32, u32); n],
+        }
+        let mut m = std::collections::BTreeMap::new();
+        for (a, b) in ab {
+            *m.entry(a).or_insert(0) += 1;
+            *m.entry(a + b).or_insert(0) -= 1;
+        }
+        let mut d = vec![0; n + 1];
+        let mut p = 0;
+        let mut k = 0;
+        for (i, j) in m {
+            d[k as usize] += i - p;
+            p = i;
+            k += j;
+        }
+        d.remove(0);
+        println!(
+            "{:?}",
+            d.iter_mut()
+                .map(|x| x.to_string())
+                .collect::<Vec<_>>()
+                .join(" ")
+        );
+    }
+}
+fn main() {
+    // a::run();
+    // b::run();
+    // c::run();
+    d::run();
+}
+
+```
+

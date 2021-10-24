@@ -1,4 +1,4 @@
-# Rust  Algorithms
+# Rust Algorithms
 
 ## Count the number of occurrences of each character and return it as a list of tuples in order of appearance. For empty output return an empty list. 字符串中字符的出现次数统计
 
@@ -107,7 +107,7 @@ pub fn run(){
 }
 ```
 
-## BTreeMap (类似于python的map，js的Set)  ，val不能重复
+## BTreeMap (类似于 python 的 map，js 的 Set) ，val 不能重复
 
 ```rust
 #[allow(unused_variables)]
@@ -274,8 +274,6 @@ pub fn run() {
 
 ```
 
-
-
 ## VecDeque （双向链表）
 
 ```rust
@@ -290,7 +288,7 @@ pub fn run(){
     buff.push_back(10);
     buff.push_back(40);
     println!("{:?}", buff);
-    
+
     // Swaps elements at indices i and j.
     buff.swap(0, 2);
     println!("{:?}",buff);
@@ -298,19 +296,19 @@ pub fn run(){
     //get capacity 占的空间
     let len = buff.capacity();
     println!("{}",len);
-    
+
     //get length
     let length = buff.len();
     println!("{}",length);
-    
+
     buff.reserve_exact(len);
     println!("{:?}",buff);
 
-    //to Vec 
+    //to Vec
     let c: Vec<&i32> = buff.iter().collect();
     println!("vec: {:?}",c);
 
-    //lop value 
+    //lop value
      for num in buff.iter() {
     let val = *num;
     println!("{}",val);
@@ -489,8 +487,6 @@ pub fn run() {
 }
 
 ```
-
-
 
 ## generic in rust
 
@@ -833,7 +829,7 @@ pub fn run() {
         println!("txt file content:{}", content);
     }
 
-    
+
 }
 
 ```
@@ -863,8 +859,6 @@ pub fn run() {
 
 ```
 
-
-
 ## regex in rust
 
 ```rust
@@ -883,13 +877,13 @@ pub fn run() {
 
 ```
 
-## 字符串反转 
+## 字符串反转
 
 ```rust
   fn reverse(phrase:&str)-> String {
         let mut i = phrase.len();
         let mut reversed = String::new();
-        
+
         while i > 0 {
             reversed.push(phrase.chars().nth(i - 1).unwrap());
             i -= 1;
@@ -1293,7 +1287,7 @@ pub fn run() {
 
 ```
 
-## Lettcode two_sum problem  solution in rust
+## Lettcode two_sum problem solution in rust
 
 ```rust
 use std::collections::HashMap;
@@ -1355,7 +1349,7 @@ pub fn run() {
 
 ```
 
-## rust  数组中删除重复的部分
+## rust 数组中删除重复的部分
 
 ```rust
 #[allow(dead_code)]
@@ -1380,7 +1374,7 @@ pub fn run() {
 
 ```
 
-## 各位相加到小于9 时输出合
+## 各位相加到小于 9 时输出合
 
 ```rust
 /*
@@ -1467,7 +1461,7 @@ fn main() {
 
 ```
 
-## 输出String的全排序
+## 输出 String 的全排序
 
 ```rust
   // input '123' 输出string的全排序
@@ -1537,7 +1531,7 @@ fn main() {
         }
 ```
 
-## Sort Vec 从小到大 排序
+## Sort float Vec 从小到大 排序
 
 ```rust
 fn main() {
@@ -1547,15 +1541,14 @@ fn main() {
     println!("{:?}", vec);
     assert_eq!(vec, vec![1.123, 1.15, 2.0, 5.5, 100.1]);
 }
-
 ```
 
-## **Select Mul **
+## Select Mul (Atcoder_abc_221_C)
 
-```
-Sample Input 1 
+```rust
+Sample Input 1
 123
-Sample Output 1 
+Sample Output 1
 63
 As described in Problem Statement, there are six ways to separate it:
 12 and 3,
@@ -1566,8 +1559,6 @@ As described in Problem Statement, there are six ways to separate it:
 32 and 1.
 The products of these pairs, in this order, are 36, 63, 26, 62, 23, 32, with 63 being the maximum.
 ```
-
-
 
 ```rust
 //solution for problem C
@@ -1642,10 +1633,10 @@ fn main() {
 
 ```
 
-## Atcoder abc 221  problem D
+## Online games (Atcoder_abc_221_D)
 
 ```rust
-//soluti on for problem D
+//solution for problem D
 // 3
 // 1 2
 // 2 3
@@ -1685,7 +1676,7 @@ fn main() {
 
 ```
 
-## find most common element
+## find most common element (找出出现次数最多的元素)
 
 ```rust
 fn main() {
@@ -1737,4 +1728,3 @@ fn main() {
 }
 
 ```
-

@@ -425,7 +425,74 @@ fn process_payment(pay:Payments){
     println!("{}", result_1);
 ```
 
-## *generic* in rust
+## Cell in rust
+
+```rust
+#[allow(unused_variables)]
+use std::cell::Cell;
+/**
+ * Cell 原生值可以改
+*/
+#[allow(dead_code)]
+struct Book {
+    name: String,
+    price: Cell<u32>,
+}
+pub fn run() {
+    let rust_book = Book {
+        name: "rust-book".into(),
+        price: Cell::new(99),
+    };
+    assert_eq!(rust_book.name, "rust-book");
+    assert_eq!(rust_book.price.get(), 99);
+    rust_book.price.set(199); //Cell 原生值可以改
+    assert_eq!(rust_book.price.get(), 199);
+
+    let s: String = "rust-book".into();
+    let bar = Cell::new(s);
+    bar.set("15".into()); //可以改值
+    let x = bar.into_inner(); //Get String value from Cell
+    println!("{}", x);
+}
+
+```
+
+## RefCell in rust
+
+```rust
+#[allow(unused_variables)]
+use std::cell::RefCell;
+/**
+ * RefCell 原生值可以改
+*/
+#[allow(dead_code)]
+struct Book {
+    name: String,
+    price: RefCell<u32>,
+}
+pub fn run() {
+    let mut rust_book = Book {
+        name: "rust-book".into(),
+        price: RefCell::new(99),
+    };
+    assert_eq!(rust_book.name, "rust-book");
+    rust_book.price.borrow_mut(); //RefCell 原生值可以改
+    println!("{:?}", rust_book.price.borrow()); //99
+    println!("{:?}", rust_book.price.as_ptr()); //指针地址 0x7ffcb13f2c40
+    println!("{:?}", *rust_book.price.get_mut() + 10); //99+10 =>109
+
+    let s: String = "rust-book".into();
+    let bar = RefCell::new(s);
+    bar.borrow_mut().push_str(" 15"); //可以改值 为rust-book 15
+    let x = bar.into_inner(); //Get String value from refCell
+    println!("{}", x);
+}
+
+```
+
+
+
+## generic in rust
 
 ```rust
 #[allow(dead_code)]
@@ -1575,10 +1642,10 @@ fn main() {
 
 ```
 
-## 
+## Atcoder abc 221  problem D
 
 ```rust
-//solution for problem D
+//soluti on for problem D
 // 3
 // 1 2
 // 2 3
@@ -1613,10 +1680,60 @@ mod d {
     }
 }
 fn main() {
-    // a::run();
-    // b::run();
-    // c::run();
     d::run();
+}
+
+```
+
+## find most common element
+
+```rust
+fn main() {
+    /*{"a": 2, "b": 3, "m": 1, "s": 3}
+    common item val :"b"
+    common item index :1
+    common item val :"s"
+    common item index :3
+    */
+    let str = "aabbbssms";
+    fn find_most_common(str: &str) -> [(&str, i32); 1] {
+        let mut bmap = BTreeMap::new();
+        let str_vec = str.split("").filter(|s| !s.is_empty()).collect::<Vec<_>>();
+        for i in 0..str_vec.len() {
+            if !bmap.contains_key(str_vec[i]) {
+                bmap.insert(str_vec[i], 1);
+            } else {
+                let mut count = bmap
+                    .get(str_vec[i])
+                    .unwrap()
+                    .to_string()
+                    .parse::<i32>()
+                    .unwrap();
+                count += 1;
+                bmap.insert(str_vec[i], count);
+            }
+        }
+        fn find_max<I>(iter: I) -> Option<I::Item>
+        where
+            I: Iterator,
+            I::Item: Ord,
+        {
+            iter.reduce(|a, b| if a >= b { a } else { b })
+        }
+        println!("{:?}", bmap);
+        // println!("{:?}", bmap.keys());
+        // println!("{:?}", bmap.values());
+        for (index, item) in bmap.values().enumerate() {
+            if item == find_max(bmap.values()).unwrap() {
+                let vec: Vec<&str> = bmap.keys().cloned().collect();
+                println!("common item val :{:?}", vec[index]);
+                println!("common item index :{:?}", index);
+            }
+        }
+        // println!("{:?}", find_max(bmap.values()).unwrap());
+        return [("", find_max(bmap.values()).unwrap().to_owned())];
+    }
+    find_most_common(str);
 }
 
 ```

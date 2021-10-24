@@ -2,8 +2,6 @@
 
 Learn how to read local json files
 
-Last updated on Oct 19, 2019 3 min read
-
 We can import or read local JSON files in Angular,several different ways depending upon the Angular version we are using.
 
 In this post I am listing out different methods with examples on how to read JSON files in Angular.
@@ -14,7 +12,7 @@ Angular framework supports TypeScript 2.9 from 6.1 version onwards.In typescript
 
 I have added a sample JSON file in assets folder of Angular App. Have a look at the sample json example
 
-```
+```js
 {
 "Post": "Angular Json Files",
 "CanEdit": true,
@@ -24,7 +22,7 @@ I have added a sample JSON file in assets folder of Angular App. Have a look at 
 
 I have imported sampleJson.json in our ReadingJsonFilesComponent as shown below
 
-```
+```js
 import { Component, OnInit } from '@angular/core';
 import SampleJson from '../../assets/SampleJson.json';
 
@@ -52,13 +50,13 @@ ERROR in src/app/reading-json-files/reading-json-files.component.ts(2,24): error
 
 To remove the above error,In tsconfig.json file under compiler options we need to add “resolveJsonModule” and ”esModuleInterop” configurations as true as shown below.
 
-```
+```js
 {  "compilerOptions": {  "resolveJsonModule": true, "esModuleInterop": true } }
 ```
 
 One more thing you need to understand is the the imported JSON file contents are typesafe. In the above json version is a number. So if you tried to change the version to string it will throw error.
 
-```
+```js
 SampleJson.Version= "Seven"; //throws error as Version is of type number
 ```
 
@@ -68,7 +66,7 @@ In earlier versions of Angular like Angular 5 or Angular 4 to read local json fi
 
 We need to inject HttpClient in constructor.
 
-```
+```js
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -99,7 +97,7 @@ HttpClient is introduced in Angular 4.3, If you are using Angular version 4.3 be
 
 We need to use Http from “@angular/http” to import JSON files in Angular version 4.3 below and Angular 2 +.
 
-```
+```js
 import { Component, Input } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
@@ -130,7 +128,7 @@ public getJSON(): Observable<any> {
 
 Angular Http will not work if the application goes offline. In that case we have an alternate way of importing JSON files We need to add a new file json-typings.d.ts in app folder along with index.html file
 
-```
+```js
 declare module "*.json" {
   const value: any;
   export default value;

@@ -732,7 +732,6 @@ fn get_job(name: &str) -> Option<&str> {
         _ => None,
     }
 }
-
 ```
 
 ## parse json in rust
@@ -883,7 +882,6 @@ pub fn run() {
   fn reverse(phrase:&str)-> String {
         let mut i = phrase.len();
         let mut reversed = String::new();
-
         while i > 0 {
             reversed.push(phrase.chars().nth(i - 1).unwrap());
             i -= 1;
@@ -1728,3 +1726,66 @@ fn main() {
 }
 
 ```
+
+## Kata 1 (vec 删除重复的元素,返回Unique Vec)
+
+```rust
+use std::collections::BTreeSet;
+        fn unique_in_order(vec: Vec<i32>) -> Vec<i32> {
+            let mut bset = BTreeSet::new();
+            for i in vec {
+                bset.insert(i);
+            }
+            let mut re_vec = Vec::new();
+            for item in &bset {
+                re_vec.push(*item);
+            }
+            re_vec
+        }
+```
+
+## Kata 2 (寻找k大元素，删除重复)
+
+```rust
+/**
+ * Kata1
+ * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+ * @param a int整型一维数组
+ * @param n int整型
+ * @param K int整型     * @return int整型
+ */
+struct Kata1 {}
+impl Kata1 {
+    fn new() -> Self {
+        Kata1 {}
+    }
+    #[allow(non_snake_case)]
+    #[allow(dead_code)]
+    #[allow(unused_variables)]
+    pub fn findKth(&self, a: Vec<i32>, n: i32, K: i32) -> i32 {
+        // write code here
+        use std::collections::BTreeSet;
+        fn unique_in_order(vec: Vec<i32>) -> Vec<i32> {
+            let mut bset = BTreeSet::new();
+            for i in vec {
+                bset.insert(i);
+            }
+            let mut re_vec = Vec::new();
+            for item in &bset {
+                re_vec.push(*item);
+            }
+            re_vec
+        }
+        let mut a_ = a.clone();
+        a_ = unique_in_order(a_.clone());
+        a_.sort();
+        // dbg!(&a_);
+        // println!("{:?}", unique_in_order(a_.clone()));
+        return a_[a_.len() - K as usize];
+    }
+}
+fn main{
+    println!("{}",Kata1::findKth(&Kata1::new(),vec![1,5,14,65,2,5],6,3)); //return 5
+}
+```
+

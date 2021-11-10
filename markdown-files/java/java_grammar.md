@@ -1,11 +1,11 @@
 # Java Codewar Solutions && Java grammar
 
-## Java 多个进程同步运行
+## Java 多个线程同步运行
 
 ```java
 class Counter{
 int count;
-public synchronized void increment(){ //两个进程不能同时执行该方法 加 synchronized
+public synchronized void increment(){ //两个线程不能同步执行该方法 加 synchronized
     count++;
 	}
 }
@@ -13,22 +13,22 @@ class RunSyncThread{
 public void run() throws Exception{
     Counter c = new Counter();
 
-    Thread t1 = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            for (int i = 0;i<1000;i++){
-                c.increment();
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0;i<1000;i++){
+                    c.increment();
+                }
             }
-        }
-    });
-    Thread t2 = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            for (int i = 0;i<1000;i++){
-                c.increment();
+        });
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0;i<1000;i++){
+                    c.increment();
+                }
             }
-        }
-    });
+        });
     t1.run();
     t2.run();
     t1.join();
@@ -607,7 +607,6 @@ public class _Supplier {
                     "jdbc://localhost5432/user"
             );
 }
-
 ```
 
 
@@ -971,6 +970,12 @@ class Merge{
 /**
  *  包含min函数的栈
  */
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.function.*;
+import java.util.TreeSet;
+import java.util.stream.Stream;
+import java.util.Stack;
 class StackApplication {
     private Stack<Integer> dataStack = new Stack<>(); // 数据栈
     private Stack<Integer> minStack = new Stack<>(); // 维护min函数的栈
@@ -1111,7 +1116,7 @@ public class _isDuplicate {
 }
 ```
 
-## Kata18 ()
+## Kata18 (数组元素出现频度统计)
 
 ```java
 public class arrayFrequency {
@@ -1247,22 +1252,124 @@ public class StrToInt {
 ## Kata 22 (查找返回Index，binarySearch )
 
 ```java
-class Solution {
-    public static void main(String[] args) {
-        int[] arr = {1,9,2,3,5,4};
-        System.out.println(search(arr,9)); //1
-    }
-//    找到返回index 找不到 返回-1
-    public static int search(int[] nums, int target) {
-        int re = -1;
-        for(int i=0;i<nums.length;i++){
-            if(nums[i]==target){
-                re = i;
+/***
+ * 小到大排序的数组返回index (binarySearch)
+ * in:{1,5,9,15,20,23},15
+ * out:target index 3
+ * can't find target return -1
+ * 时间复杂度 log(n)
+ */
+
+class binarySearch{
+    public static int search(int[] values,int target){
+        int left = 0;
+        int right = values.length-1;
+        int result = -1;
+        while(left <=right){
+            Integer mid = (left + right)/2;
+            if(values[mid]==target){
+                result = mid;
                 break;
             }
+            else if(values[mid] <target){
+                left=mid+1;
+            }else {
+                right=mid-1;
+            }
         }
-        return re;
+        return result;
+
     }
 }
 ```
+
+## Kata 23 ( List 交换相邻的元素 返回交换的List)
+
+```java
+/**
+ * List 交换相邻的元素 返回交换的List
+ *out:[2, 1, 4, 3, 6,5]
+ *in:[1, 2, 3, 4, 5,6]
+ */
+class reverse_neighbours
+{
+    public static List<Integer> reverse_(List<Integer> array) {
+        List<Integer> list3 = new ArrayList<Integer>();
+        for (int i = 0; i < array.size(); i++) {
+            list3.add(0);
+        }
+        if(array.size()%2==0){
+            for(int i=0;i<list3.size();i++){
+                if(i%2==0)list3.set(i,array.get(i+1));
+                if(i%2==0)list3.set(i+1,array.get(i));
+            }
+        }else {
+            for(int i=0;i<list3.size()-1;i++){
+                if(i%2==0)list3.set(i,array.get(i+1));
+                if(i%2==0)list3.set(i+1,array.get(i));
+            }
+            list3.set(list3.size()-1,array.get(list3.size()-1));
+        }
+        System.out.println(list3);
+        return list3;
+    }
+}
+//System.out.println(reverse_neighbours.reverse_(Arrays.asList(new Integer[]{1, 2, 3, 4, 5})));
+```
+
+## Kata 24 (slice List)
+
+```java
+/**
+ *         input:(["python", "pip", "ok","java","rust","cpp","kotlin"],3,5);
+ *         output:[java, rust, cpp]
+ */
+class slice_list{
+    public static <T> List<String> slice(List<T> asList,Integer start, Integer end) {
+        List<String> list1 = new ArrayList();
+        for(Integer s=start; s<=end; s++) {
+            list1.add((String) asList.get(s));
+        }
+        return list1;
+    }
+}
+//System.out.println(slice_list.slice(Arrays.asList(new String[]{"python", "pip", "ok","java","rust","cpp","kotlin"}),3,5));
+```
+
+## Kata 25 (高精度计算,BigDecimal)
+
+```java
+/**
+ *java浮点数运算精度损失，用BigDecimal 解决
+ */
+class sumBigDecimal{
+    public static double sum(double value1,double value2){
+        java.math.BigDecimal big_val1 = new java.math.BigDecimal(Double.toString(value1));
+        java.math.BigDecimal big_val2 = new java.math.BigDecimal(Double.toString(value2));
+        double result = big_val1.add(big_val2).doubleValue();
+        return result;
+    }
+}
+//System.out.println(sumBigDecimal.sum(1.21,3.51)); //4.72
+```
+
+## Kata 26 (求一个数的平方根)
+
+```java
+/**
+ * 求一个数的平方根
+ */
+class sqrt{
+    public static double sqrt(int x){
+        if(x==0 ||x==1)return x;
+        double r = x;
+        while(r*r>x){
+            r = (r+x/r)/2;
+        }
+        return r;
+    }
+}
+```
+
+## 
 

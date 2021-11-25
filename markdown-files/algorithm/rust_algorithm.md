@@ -1529,6 +1529,27 @@ fn main() {
         }
 ```
 
+## 自己定义的input!() (快速IO输入值)
+
+```rust
+#[allow(unused_macros)]
+macro_rules! input {
+    () => {{
+        let mut string = String::new();
+        std::io::stdin().read_line(&mut string).unwrap();
+        string
+    }};
+}
+fn main() {
+    let s = input!();
+    println!("{:?}", s); //"alen andry\n"
+    assert_eq!("alen andry\n".to_string(), s);
+}
+
+```
+
+
+
 ## Sort float Vec 从小到大 排序
 
 ```rust
@@ -1786,6 +1807,330 @@ impl Kata1 {
 }
 fn main{
     println!("{}",Kata1::findKth(&Kata1::new(),vec![1,5,14,65,2,5],6,3)); //return 5
+}
+```
+
+## Kata 3 (三个数的最大乘积)
+
+```rust
+struct Solution{}
+impl Solution {
+    fn new() -> Self {
+        Solution{}
+    }
+    /**
+    * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+    * 最大乘积
+        * @param A int整型一维数组 
+        * @return long长整型
+    */
+    pub fn solve(&self, A: Vec<i32>) -> i64 {
+   let mut vec = A;
+    vec.sort();
+    fn contain_minus(vec: Vec<i32>) -> bool {
+        let mut re = false;
+        for i in vec {
+            if i < 0 {
+                re = true;
+            }
+        }
+        re
+    }
+    if contain_minus(vec.clone()) {
+        if vec[0] as i64 * vec[1] as i64 > vec[vec.len() - 2] as i64 * vec[vec.len() - 3] as i64 {
+            return vec[vec.len() - 1] as i64 * vec[0] as i64 * vec[1] as i64;
+        }
+    }
+    return vec[vec.len() - 1] as i64 * vec[vec.len() - 2] as i64 * vec[vec.len() - 3] as i64; }
+}
+```
+
+## Kata 4 (排序算法的实现 Sort Algorithm in Rust)
+
+```rust
+fn bubble_sort<T>(slice: &mut [T])
+where
+    T: Ord,
+{
+    let mut swapped = true;
+    while swapped {
+        swapped = false;
+        for i in 1..slice.len() {
+            if slice[i - 1] > slice[i] {
+                slice.swap(i - 1, i);
+                swapped = true;
+            }
+        }
+    }
+}
+
+fn isertion_sort<T>(slice: &mut [T])
+where
+    T: Ord,
+{
+    for unsorted in 1..slice.len() {
+        let i = match slice[..unsorted].binary_search(&slice[unsorted]) {
+            Ok(i) => i,
+            Err(err) => err,
+        };
+        slice[i..=unsorted].rotate_right(1);
+    }
+}
+
+fn main() {
+    let mut vec1 = vec![1, 2, 30, 40, 5, 6, 7];
+    bubble_sort(&mut vec1);
+    assert_eq!(vec1, vec![1, 2, 5, 6, 7, 30, 40]);
+    println!("buble_sort {:?}", vec1);
+
+    let mut vec2 = vec![10, 2, 30, 40, 5, 6, 7];
+    isertion_sort(&mut vec2);
+    assert_eq!(vec2, vec![2, 5, 6, 7, 10, 30, 40]);
+    println!("isertion_sort {:?}", vec2);
+}
+
+```
+
+## Kata 5 (最小移动次数，每次操作n-1各元素加1，最终值相等)
+
+```rust
+#[allow(dead_code)]
+/**
+ * 输入：nums = [1,2,3]
+输出：3
+解释：
+只需要3次操作（注意每次操作会增加两个元素的值）：
+[1,2,3]  =>  [2,3,3]  =>  [3,4,3]  =>  [4,4,4]
+*/
+struct Solution {}
+impl Solution {
+    pub fn min_moves(nums: Vec<i128>) -> i128 {
+        nums.iter().sum::<i128>() - nums.iter().min().unwrap() * nums.len() as i128
+    }
+}
+fn main() {
+    println!(
+        "{}",
+        Solution::min_moves(vec![11515115151, 100000000, 20000000000000000000000000])
+    );
+    println!("{}", Solution::min_moves(vec![1, 2, 3]));
+}
+
+```
+
+## Kata 6 (Vec 中所有类型转化为String)
+
+```rust
+macro_rules! vec_strs {
+    (
+        $($element:expr),*
+    ) => {
+        {
+            let mut v = Vec::new();
+            $(
+                v.push(format!("{}", $element));
+            )*
+            v
+        }
+    };
+}
+fn main() {
+    let s = vec_strs![1, "a", true, 3.14159f32];
+    println!("{:?}", s); //["1", "a", "true", "3.14159"]
+    assert_eq!(s, &["1", "a", "true", "3.14159"]);
+}
+
+```
+
+## Kata 7 ( kmp算法)
+
+```rust
+/**
+描述
+给你一个文本串 T ，一个非空模板串 S ，问 S 在 T 中出现了多少次
+数据范围：1 \le len(S) \le 500000, 1 \le len(T) \le 10000001≤len(S)≤500000,1≤len(T)≤1000000
+要求：空间复杂度 O(len(S))O(len(S))，时间复杂度 O(len(S)+len(T))O(len(S)+len(T))
+示例1
+输入：
+"ababab","abababab"
+复制
+返回值：
+2
+* */
+
+```
+
+## Kata 8 (数字的幂  i64.pow(2 as u32))
+
+```rust
+#![allow(unused_imports)]
+#![allow(unused_macros)]
+#![allow(dead_code)]
+#![allow(unused_variables)]
+use proconio::{input, marker::*};
+use std::cmp::*;
+use std::collections::*;
+
+//solution for problem A
+pub mod a {
+    pub fn run() {
+        proconio::input! {
+            a: i32, b: i32
+        }
+        println!("{}", 32i64.pow((a - b) as u32))
+    }
+}
+```
+
+## Kata 9 (判断输入的两个字符串中的chars 是否相同，是->Yes，否->No)
+
+```rust
+#![allow(unused_imports)]
+#![allow(unused_macros)]
+#![allow(dead_code)]
+#![allow(unused_variables)]
+use proconio::{input, marker::*};
+use std::cmp::*;
+use std::collections::*;
+//solution for problem B
+pub mod b {
+    pub fn run() {
+        use proconio::{input, marker::*};
+        input! {
+            mut s: Chars,
+            t: Chars,
+        }
+        if s.iter().zip(t.iter()).all(|(a, b)| a == b) {
+            println!("Yes");
+        } else {
+            let mut f = false;
+            for i in 0..s.len() - 1 {
+                s.swap(i, i + 1);
+                f |= s.iter().zip(t.iter()).all(|(a, b)| a == b);
+                s.swap(i, i + 1);
+            }
+            if f {
+                println!("Yes");
+            } else {
+                println!("No");
+            }
+        }
+    }
+}
+```
+
+## Kata 10 (Select Mul,把String分为二，parse 以后相乘，放到数组里 返回最大的item)
+
+```rust
+/**
+ * Sample Input 1
+123
+Sample Output 1
+63
+As described in Problem Statement, there are six ways to separate it:
+12 and 3,
+21 and 3,
+13 and 2,
+31 and 2,
+23 and 1,
+32 and 1.
+The products of these pairs, in this order, are 36, 63, 26, 62, 23, 32, with 63 being the maximum.
+ */
+//solution for problem C
+pub mod c {
+    pub fn run() {
+        use proconio::{input, marker::*};
+        use std::collections::BTreeMap;
+        input! {
+            mut s: Chars,
+        }
+        //reverse
+        fn reverse(phrase: String) -> String {
+            let mut i = phrase.len();
+            let mut reversed = String::new();
+
+            while i > 0 {
+                reversed.push(phrase.chars().nth(i - 1).unwrap());
+                i -= 1;
+            }
+            reversed
+        }
+        let s = s.iter_mut().map(|x| x.to_string()).collect::<Vec<_>>();
+        //generate bmap
+        fn generate_bmap(s: Vec<String>) {
+            let s_string = s.join("").to_string();
+            let mut bmap: BTreeMap<String, String> = BTreeMap::new();
+            for i in 1..s_string.len() {
+                let mut s_string = s.clone().join("").to_string();
+                let s_string_l = s_string.split_off(i);
+                bmap.insert(s_string, s_string_l);
+            }
+            for i in 1..s_string.len() {
+                let mut s_string = reverse(s.clone().join("").to_string());
+                let s_string_l = s_string.split_off(i);
+                bmap.insert(s_string, s_string_l);
+            }
+            let mut first_last_string = s.clone()[s.len() - 1].to_string();
+            first_last_string.push_str(&s.clone()[0].to_owned());
+
+            let mut middle_string = String::new();
+            for i in 1..s.len() - 1 {
+                middle_string.push_str(&s.clone()[i]);
+            }
+            bmap.insert(first_last_string, middle_string);
+
+            let mut vec = vec![];
+            for (v, k) in &bmap {
+                vec.push(
+                    v.to_owned().parse::<i128>().unwrap() * k.to_owned().parse::<i128>().unwrap(),
+                );
+            }
+            vec.sort();
+            println!("{:?}", vec[vec.len() - 1]);
+            // println!("{:?}", bmap);
+            // println!("{:?}", vec);
+        }
+
+        generate_bmap(s.clone());
+    }
+}
+```
+
+## Kata 11 (Online games)
+
+```rust
+//https://atcoder.jp/contests/abc221/tasks/abc221_d
+
+mod d {
+    pub fn run() {
+        proconio::input! {
+            n: usize,
+            ab: [(u32, u32); n],
+        }
+        let mut m = std::collections::BTreeMap::new();
+        for (a, b) in ab {
+            *m.entry(a).or_insert(0) += 1;
+            *m.entry(a + b).or_insert(0) -= 1;
+        }
+        // println!("{:?}", m);
+        let mut d = vec![0; n + 1]; //if n=5,[0, 0, 0, 0, 0, 0]
+                                    // println!("{:?}", &d);
+        let mut p = 0;
+        let mut k = 0;
+        for (i, j) in m {
+            d[k as usize] += i - p;
+            p = i;
+            k += j;
+        }
+        d.remove(0);
+        println!(
+            "{:?}",
+            d.iter_mut()
+                .map(|x| x.to_string())
+                .collect::<Vec<_>>()
+                .join(" ")
+        );
+    }
 }
 ```
 
